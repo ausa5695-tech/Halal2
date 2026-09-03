@@ -21,29 +21,29 @@ class MainActivity : ComponentActivity() {
             domStorageEnabled = true
             mediaPlaybackRequiresUserGesture = false
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+            // تم تفعيل التخزين المؤقت لمنع ظهور خطأ الكاش
+            cacheMode = WebSettings.LOAD_DEFAULT
+            databaseEnabled = true
         }
 
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
-                // حقن كود جافاسكريبت لإسكات أو كتم الوسائط الموسيقية أو التعامل مع العناصر الصوتية
                 injectAudioFilteringScript(view)
             }
         }
 
-        // فتح موقع تيك توك كمثال أولي للتجربة داخل التطبيق
+        // فتح موقع تيك توك بشكل مباشر
         webView.loadUrl("https://www.tiktok.com")
     }
 
     private fun injectAudioFilteringScript(webView: WebView?) {
-        // كود جافاسكريبت للتحكم في عناصر الصوت والفيديو داخل الصفحة المفتوحة
         val script = """
             (function() {
-                // مراقبة عناصر الفيديو والصوت لكتم عناصر الموسيقى أو ضبطها حسب الحاجة
                 setInterval(() => {
                     const videos = document.querySelectorAll('video');
                     videos.forEach(video => {
-                        // هنا يمكننا إضافة فحص لعناصر الفيديو أو التعامل مع مستوى الصوت
+                        // مكان التحكم في الوسائط والصوت داخل الصفحة
                     });
                 }, 1000);
             })();
