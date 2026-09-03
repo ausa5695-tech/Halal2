@@ -11,17 +11,13 @@
     <application
         android:name=".AlTafaseelApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="التفاصيل"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AlTafaseel"
+        android:theme="@android:style/Theme.DeviceDefault.NoActionBar"
         tools:targetApi="34">
 
         <activity
             android:name=".presentation.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.AlTafaseel">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,4 +27,3 @@
     </application>
 
 </manifest>
-
