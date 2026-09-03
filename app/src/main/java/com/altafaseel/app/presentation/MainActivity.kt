@@ -1,30 +1,53 @@
 package com.altafaseel.app.presentation
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import com.altafaseel.app.presentation.home.HomeScreen
-import com.altafaseel.app.presentation.theme.AlTafaseelTheme
-import dagger.hilt.android.AndroidEntryPoint
+import com.altafaseel.app.R
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            AlTafaseelTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    HomeScreen()
-                }
+        setContentView(R.layout.activity_main)
+
+        val webView = findViewById<WebView>(R.id.webView)
+        webView.settings.apply {
+            javaScriptEnabled = true
+            domStorageEnabled = true
+            mediaPlaybackRequiresUserGesture = false
+            mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
+        }
+
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                // حقن كود جافاسكريبت لإسكات أو كتم الوسائط الموسيقية أو التعامل مع العناصر الصوتية
+                injectAudioFilteringScript(view)
             }
         }
+
+        // فتح موقع تيك توك كمثال أولي للتجربة داخل التطبيق
+        webView.loadUrl("https://www.tiktok.com")
+    }
+
+    private fun injectAudioFilteringScript(webView: WebView?) {
+        // كود جافاسكريبت للتحكم في عناصر الصوت والفيديو داخل الصفحة المفتوحة
+        val script = """
+            (function() {
+                // مراقبة عناصر الفيديو والصوت لكتم عناصر الموسيقى أو ضبطها حسب الحاجة
+                setInterval(() => {
+                    const videos = document.querySelectorAll('video');
+                    videos.forEach(video => {
+                        // هنا يمكننا إضافة فحص لعناصر الفيديو أو التعامل مع مستوى الصوت
+                    });
+                }, 1000);
+            })();
+        """.trimIndent()
+        webView?.evaluateJavascript(script, null)
     }
 }
-
